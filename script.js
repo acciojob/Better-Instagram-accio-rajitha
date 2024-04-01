@@ -1,43 +1,30 @@
 //your code here
-document.addEventListener('DOMContentLoaded', function() {
-    const images = document.querySelectorAll('.image');
+document.addEventListener('DOMContentLoaded', () => {
+  const images = document.querySelectorAll('.image');
+  let draggedItem = null;
 
-    let draggedImage = null;
+  images.forEach(image => {
+    image.addEventListener('dragstart', dragStart);
+    image.addEventListener('dragover', dragOver);
+    image.addEventListener('drop', drop);
+  });
 
-    images.forEach(image => {
-        image.addEventListener('dragstart', dragStart);
-        image.addEventListener('dragend', dragEnd);
-        image.addEventListener('dragover', dragOver);
-        image.addEventListener('dragenter', dragEnter);
-        image.addEventListener('dragleave', dragLeave);
-        image.addEventListener('drop', drop);
-    });
+  function dragStart(event) {
+    draggedItem = event.target;
+    event.dataTransfer.setData('text/plain', event.target.id);
+  }
 
-    function dragStart() {
-        draggedImage = this;
-        this.classList.add('selected');
-    }
+  function dragOver(event) {
+    event.preventDefault();
+  }
 
-    function dragEnd() {
-        this.classList.remove('selected');
-        draggedImage = null;
-    }
+  function drop(event) {
+    event.preventDefault();
+    const droppedItem = event.target;
 
-    function dragOver(e) {
-        e.preventDefault();
-    }
-
-    function dragEnter(e) {
-        e.preventDefault();
-        this.classList.add('hovered');
-    }
-
-    function dragLeave() {
-        this.classList.remove('hovered');
-    }
-
-    function drop() {
-        this.classList.remove('hovered');
-        this.parentNode.insertBefore(draggedImage, this);
-    }
+    // Swap the innerHTML of the dragged and dropped items
+    const tempHTML = draggedItem.innerHTML;
+    draggedItem.innerHTML = droppedItem.innerHTML;
+    droppedItem.innerHTML = tempHTML;
+  }
 });
