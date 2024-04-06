@@ -1,30 +1,27 @@
 //your code here
-document.addEventListener('DOMContentLoaded', () => {
-  const images = document.querySelectorAll('.image');
-  let draggedItem = null;
+document.addEventListener("DOMContentLoaded", function () {
+  const images = document.querySelectorAll(".image");
+  let dragged;
 
-  images.forEach(image => {
-    image.addEventListener('dragstart', dragStart);
-    image.addEventListener('dragover', dragOver);
-    image.addEventListener('drop', drop);
+  images.forEach((image) => {
+    image.addEventListener("dragstart", function (event) {
+      dragged = event.target;
+      event.dataTransfer.setData("text/plain", null);
+    });
+
+    image.addEventListener("dragover", function (event) {
+      event.preventDefault();
+    });
+
+    image.addEventListener("drop", function (event) {
+      event.preventDefault();
+      if (event.target !== dragged) {
+        const tempHTML = event.target.innerHTML;
+        event.target.innerHTML = dragged.innerHTML;
+        dragged.innerHTML = tempHTML;
+      }
+    });
   });
-
-  function dragStart(event) {
-    draggedItem = event.target;
-    event.dataTransfer.setData('text/plain', event.target.id);
-  }
-
-  function dragOver(event) {
-    event.preventDefault();
-  }
-
-  function drop(event) {
-    event.preventDefault();
-    const droppedItem = event.target;
-
-    // Swap the innerHTML of the dragged and dropped items
-    const tempHTML = draggedItem.innerHTML;
-    draggedItem.innerHTML = droppedItem.innerHTML;
-    droppedItem.innerHTML = tempHTML;
-  }
 });
+
+
