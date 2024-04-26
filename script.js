@@ -1,4 +1,6 @@
 //your code here
+//your code here
+
 document.addEventListener("DOMContentLoaded", function () {
   const images = document.querySelectorAll(".image");
   let dragged;
@@ -39,9 +41,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const draggedIndex = Array.from(parent.children).indexOf(dragged);
         const dropIndex = Array.from(parent.children).indexOf(event.target);
         if (draggedIndex < dropIndex) {
-          parent.insertBefore(event.target, dragged);
+          parent.insertBefore(event.target, dragged.nextSibling);
         } else {
-          parent.insertBefore(dragged, event.target.nextSibling);
+          parent.insertBefore(event.target, dragged);
         }
       }
     });
